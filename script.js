@@ -199,13 +199,14 @@ function giveUpAndSkip() {
 
     // Disable input
     currentState.isActive = false;
-    ui.hiddenInput.blur();
+    // ui.hiddenInput.blur(); // KEEP KEYBOARD OPEN
 
     // Wait and move on
     setTimeout(() => {
         currentState.currentLevelIdx++;
         loadLevel();
         currentState.isActive = true; // Re-activate for next level
+        ui.hiddenInput.focus(); // Re-ensure focus
     }, 2000);
 }
 
@@ -273,12 +274,13 @@ function checkAnswer(userString, correctString) {
         });
 
         currentState.isActive = false; // freeze input
-        ui.hiddenInput.blur();
+        // ui.hiddenInput.blur(); // KEEP KEYBOARD OPEN
 
         setTimeout(() => {
             currentState.currentLevelIdx++;
             loadLevel();
             currentState.isActive = true; // re-activate
+            ui.hiddenInput.focus(); // Re-ensure focus
         }, 1000);
 
     } else {
