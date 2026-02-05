@@ -106,20 +106,40 @@ function loadLevel() {
 function renderSlots(name) {
     ui.inputContainer.innerHTML = '';
     const cleanName = name.trim();
+    const words = cleanName.split(/([ -])/); // Split by space or dash, keeping separators
 
-    for (let i = 0; i < cleanName.length; i++) {
-        const char = cleanName[i];
-        const slot = document.createElement('div');
+    let globalCharIndex = 0; // To track mapping to linear input
 
-        if (char === ' ' || char === '-') {
+    words.forEach(wordOrSep => {
+        if (!wordOrSep) return;
+
+        // Wrapper for "words" (not separators) to keep them together
+        const isSeparator = wordOrSep === ' ' || wordOrSep === '-';
+
+        if (isSeparator) {
+            // Separator: Add directly or in a small wrapper?
+            // Just add directly to flow, but usually space breaks line.
+            // If we want "word wrap", we need the space to allow break.
+            const slot = document.createElement('div');
             slot.className = 'letter-slot space';
-            slot.innerHTML = char === '-' ? '-' : '';
+            slot.innerHTML = wordOrSep === '-' ? '-' : '';
+            ui.inputContainer.appendChild(slot);
+            globalCharIndex++;
         } else {
-            slot.className = 'letter-slot';
-            slot.dataset.index = i;
+            // Word: Wrap in a container that doesn't break internally
+            const wordWrapper = document.createElement('div');
+            wordWrapper.className = 'word-wrapper';
+
+            for (let i = 0; i < wordOrSep.length; i++) {
+                const char = wordOrSep[i];
+                const slot = document.createElement('div');
+                slot.className = 'letter-slot';
+                slot.dataset.index = globalCharIndex++; // Correct index relative to full string
+                wordWrapper.appendChild(slot);
+            }
+            ui.inputContainer.appendChild(wordWrapper);
         }
-        ui.inputContainer.appendChild(slot);
-    }
+    });
 }
 
 function updateClueUI() {
