@@ -47,12 +47,13 @@ body {
     width: 100%;
     height: 100%;
     max-width: 600px;
-    /* Tablet/Desktop constraint */
     position: relative;
     background: rgba(255, 255, 255, 0.1);
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
     display: flex;
     flex-direction: column;
+    /* Ensure content stays at top */
+    justify-content: flex-start;
 }
 
 .screen {
@@ -64,7 +65,9 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px;
+    justify-content: flex-start;
+    padding: 10px 15px;
+    overflow-y: auto;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.4s ease;
@@ -161,22 +164,23 @@ body {
 
 .clue-card-container {
     width: 100%;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     perspective: 1000px;
+    min-height: 0;
 }
 
 .clue-card {
     background: var(--card-bg);
-    border-radius: 20px;
-    padding: 30px 20px;
+    border-radius: 16px;
+    padding: 20px 15px;
     width: 100%;
-    min-height: 180px;
+    min-height: 120px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     position: relative;
     overflow: hidden;
@@ -308,13 +312,14 @@ body {
     flex-wrap: wrap;
     justify-content: center;
     gap: 8px;
+    /* Gap between words */
     direction: rtl;
-    /* Fixed: Ensure standard Hebrew RTL flow */
+    align-items: flex-start;
     /* Actually, for visual slots order:
        "Ben Gurion" -> [B][e][n] ...
        Hebrew: "דוד"
        Input: type 'ד' (first letter).
-       Visual: Rightmost slot should be filled? 
+       Visual: Rightmost slot should be filled?
        Standard Hebrew typing flows Right to Left.
        Slots should be arranged RTL?
        Flex defaults to Row. If Body is RTL, Flex flow is R->L.
@@ -322,19 +327,30 @@ body {
     */
 }
 
+.word-wrapper {
+    display: flex;
+    gap: 4px;
+    /* Gap between letters */
+    white-space: nowrap;
+    /* Prevent breaking inside word */
+}
+
 .letter-slot {
-    width: 40px;
-    height: 50px;
+    width: 32px;
+    /* Smaller */
+    height: 40px;
+    /* Smaller */
     background: rgba(255, 255, 255, 0.3);
-    border-bottom: 3px solid white;
+    border-bottom: 2px solid white;
     border-radius: 4px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.8rem;
+    font-size: 1.4rem;
+    /* Smaller font */
     font-weight: bold;
     color: white;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     transition: all 0.2s;
 }
 
@@ -371,7 +387,8 @@ body {
     background: transparent;
     border: none;
     box-shadow: none;
-    width: 15px;
+    width: 10px;
+    /* Smaller space */
 }
 
 /* Keyboard removed styles */
